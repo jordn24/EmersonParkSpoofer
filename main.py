@@ -1,98 +1,108 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 
 # Function to perform the booking steps
 def perform_booking():
     numOfPeople = "4"
     selected_date = "Sunday, 15 October 2023"
-    startTimeHr = "15"
-    startTimeMin = "0"
-    endTimeHr = "17"
-    endTimeMin = "0"
+    startTimeHr = "8"
+    startTimeMin = "30"
+    endTimeHr = "10"
+    endTimeMin = "30"
 
     driver = webdriver.Chrome()
 
-    # Maximize the browser window
-    # driver.maximize_window()
-
     driver.get("https://app.fairfieldcity.nsw.gov.au/bookingapp/futsal/")
 
-    makeBookingBtn = driver.find_element(by=By.CSS_SELECTOR, value="#app > div > div > div > div.v-col-sm-12.v-col-md-4.v-col.options-side > div > div:nth-child(1) > button")
+    # Wait for the "Make Booking" button to be clickable
+    makeBookingBtn = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "#app > div > div > div > div.v-col-sm-12.v-col-md-4.v-col.options-side > div > div:nth-child(1) > button"))
+    )
     makeBookingBtn.click()
 
-    # Add a delay of, for example, 5 seconds before proceeding
-    time.sleep(10)
-
-    newBookingBtn = driver.find_element(by=By.CSS_SELECTOR, value="#main > button > span.v-btn__content")
+    newBookingBtn = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "#main > button > span.v-btn__content"))
+    )
     newBookingBtn.click()
 
-    # Add a delay of, for example, 5 seconds before proceeding
-    time.sleep(10)
-
-    # Find the input field for the number of people by its CSS selector and send the number of people value
-    numOfPeopleInput = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div/div/div/div[3]/div/div/div[4]/div/div[1]/div[1]/div/div[1]/div/div[3]/input")
+    # Find the input field for the number of people and send the number of people value
+    numOfPeopleInput = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div/div[3]/div/div/div[4]/div/div[1]/div[1]/div/div[1]/div/div[3]/input"))
+    )
     numOfPeopleInput.send_keys(numOfPeople)
 
     # Find the date element and click on it
-    date_element = driver.find_element(by=By.XPATH, value=f"//span[@aria-label='{selected_date}']")
+    date_element = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, f"//span[@aria-label='{selected_date}']"))
+    )
     date_element.click()
 
-    time.sleep(2)
-
     # Start HR
-    startHrElement = driver.find_element(by=By.XPATH, value='//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[1]/div/div/div/div/div[2]/div[2]/div[1]/select')
+    startHrElement = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[1]/div/div/div/div/div[2]/div[2]/div[1]/select'))
+    )
     select = Select(startHrElement)
     select.select_by_value(startTimeHr)
-    
-    time.sleep(5)
 
     # Start Min
-    startMinElement = driver.find_element(by=By.XPATH, value='//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[1]/div/div/div/div/div[2]/div[2]/div[2]/select')
+    startMinElement = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[1]/div/div/div/div/div[2]/div[2]/div[2]/select'))
+    )
     select = Select(startMinElement)
     select.select_by_value("30")
 
-    # Start Min
-    startMinElement = driver.find_element(by=By.XPATH, value='//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[1]/div/div/div/div/div[2]/div[2]/div[2]/select')
+        # Start Min
+    startMinElement = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[1]/div/div/div/div/div[2]/div[2]/div[2]/select'))
+    )
     select = Select(startMinElement)
     select.select_by_value(startTimeMin)
 
-    time.sleep(5)
-
     # End HR
-    endHrElement = driver.find_element(by=By.XPATH, value='//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[2]/div/div/div/div/div[2]/div[2]/div[1]/select')
+    endHrElement = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[2]/div/div/div/div/div[2]/div[2]/div[1]/select'))
+    )
     select = Select(endHrElement)
     select.select_by_value(endTimeHr)
 
-    time.sleep(5)
-
     # End Min
-    endMinElement = driver.find_element(by=By.XPATH, value='//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[2]/div/div/div/div/div[2]/div[2]/div[2]/select')
+    endMinElement = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[2]/div/div/div/div/div[2]/div[2]/div[2]/select'))
+    )
     select = Select(endMinElement)
     select.select_by_value("30")
 
-    # End Min
-    endMinElement = driver.find_element(by=By.XPATH, value='//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[2]/div/div/div/div/div[2]/div[2]/div[2]/select')
+        # End Min
+    endMinElement = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[2]/div/div/div[2]/div[2]/div/div/div/div/div[2]/div[2]/div[2]/select'))
+    )
     select = Select(endMinElement)
     select.select_by_value(endTimeMin)
 
-    time.sleep(2)
-
     # Scroll to the search button
-    searchBtn = driver.find_element(by=By.XPATH, value='//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[3]/button/span[3]')
+    searchBtn = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="mySidenav"]/div/div/div[4]/div/div[1]/div[3]/button/span[3]'))
+    )
     driver.execute_script("arguments[0].scrollIntoView();", searchBtn)
     searchBtn.click()
-    
-    time.sleep(2)
+
 
     try:
         # Scroll to the expand button
-        expand = driver.find_element(by=By.XPATH, value='//*[@id="mySidenav"]/div/div/div[4]/div/div[2]/div/div[2]/div/div/span')
+        expand = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="mySidenav"]/div/div/div[4]/div/div[2]/div/div[2]/div/div/span'))
+        )
         driver.execute_script("arguments[0].scrollIntoView();", expand)
         expand.click()
+        
         # Scroll to the book button
-        bookBtn = driver.find_element(by=By.XPATH, value='//*[@id="mySidenav"]/div/div/div[4]/div/div[2]/div/div[2]/div/div[2]/div/div/div/div[3]/div[3]/button/span[3]')
+        bookBtn = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="mySidenav"]/div/div/div[4]/div/div[2]/div/div[2]/div/div[2]/div/div/div/div[3]/div[3]/button/span[3]'))
+        )
         driver.execute_script("arguments[0].scrollIntoView();", bookBtn)
         bookBtn.click()
         print("Blocked.")
